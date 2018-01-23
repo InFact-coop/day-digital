@@ -7,13 +7,14 @@
     "test": "NODE_ENV=test mocha ./tests/*  ",
     "test:watch": "NODE_ENV=test mocha ./tests/* --watch",
     "devbug": "elm-live src/elm/Main.elm --output=public/elm.js --dir=public --open --debug --pushstate & npm run css-watch",
-    "dev": "elm-live src/elm/Main.elm --output=public/elm.js --dir=public --open  --pushstate & npm run css-watch",
+    "dev-front-end": "elm-live src/elm/Main.elm --output=public/elm.js --dir=public --open  --pushstate & npm run css-watch",
     "build": "npm run css-build; elm-make src/elm/Main.elm --output=public/elm.js --yes",
     "css-watch": "postcss ./src/css/index.css --output ./public/style.min.css --watch --config ./postcss.config.js",
     "css-build": "postcss ./src/css/index.css --output ./public/style.min.css --config ./postcss.config.js",
     "dev-server": "NODE_ENV=development nodemon ./src/server/start",
     "heroku-postbuild": "npm run build",
-    "start": "node ./src/server/start"
+    "start": "node ./src/server/start",
+    "dev": "npm run dev-server & npm run dev-front-end"
   },
   "repository": {
     "type": "git",
