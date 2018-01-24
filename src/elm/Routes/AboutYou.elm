@@ -153,5 +153,5 @@ aboutYou model =
                     ]
                 ]
             ]
-        , grayButton ( "Next", "nextRole" )
+        , grayButton ( "Next", "next-role" )
         ]

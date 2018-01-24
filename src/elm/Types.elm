@@ -12,6 +12,8 @@ type Route
     | FourOhFour
     | NextRole
     | ThankYou
+    | PersonalIntro
+    | ChallengingProject
 
 
 type alias Model =
