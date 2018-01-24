@@ -37,8 +37,8 @@ type Stage
 type Msg
     = NoOp
     | UrlChange Navigation.Location
-    | RecordStart String
-    | RecordStop String
+    | RecordStart
+    | RecordStop
     | RecordError String
     | RecieveVideo String
     | ToggleVideo Stage

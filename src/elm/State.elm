@@ -11,7 +11,7 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = ThankYou
+    { route = AboutYou
     , videoStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
@@ -32,7 +32,7 @@ getRoute hash =
         "#about-you" ->
             AboutYou
 
-        "#nextRole" ->
+        "#next-role" ->
             NextRole
 
         "#thank-you" ->
@@ -52,11 +52,11 @@ update msg model =
             else
                 ( { model | messageLength = model.messageLength + 1 }, Cmd.none )
 
-        RecordStart string ->
-            ( model, recordStart string )
+        RecordStart ->
+            ( model, recordStart () )
 
-        RecordStop string ->
-            ( model, recordStop string )
+        RecordStop ->
+            ( model, recordStop () )
 
         RecieveVideo string ->
             ( { model | videoMessage = string }, Cmd.none )
@@ -73,10 +73,10 @@ update msg model =
                     ( { model | videoStage = StagePreRecord }, Cmd.none )
 
                 StageRecording ->
-                    ( { model | videoStage = StageRecordStopped }, recordStop "yes" )
+                    ( { model | videoStage = StageRecordStopped }, recordStop () )
 
                 StagePreRecord ->
-                    ( { model | videoStage = StageRecording }, recordStart "yes" )
+                    ( { model | videoStage = StageRecording }, recordStart () )
 
         UrlChange location ->
             if getRoute location.hash == NextRole then
@@ -95,13 +95,16 @@ update msg model =
             ( model, Cmd.none )
 
 
-port recordStart : String -> Cmd msg
+port recordStart : () -> Cmd msg
 
 
-port recordStop : String -> Cmd msg
+port recordStop : () -> Cmd msg
 
 
 port videoRoute : () -> Cmd msg
+
+
+port confirmRecording : () -> Cmd msg
 
 
 port recordError : (String -> msg) -> Sub msg

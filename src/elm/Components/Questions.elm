@@ -1,5 +1,6 @@
 module Components.Questions exposing (..)
 
+import Components.RecordVideoButton exposing (recordVideoButton)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
@@ -24,10 +25,7 @@ questionTemplate model ( title, back ) =
                 , p [ class "mid-gray raleway fw1" ] [ text "In this section we would like you to make a short video or voice recording of yourself, telling us in your own words what you are looking for." ]
                 , h3 [ class "center tc dark-gray pv4" ] [ text title ]
                 , div [ class "flex flex-row flex-wrap center tc w-75 justify-between mr1" ]
-                    [ div [ class "w-50-ns w-100 mid-gray flex flex-column mv2 pointer", onClick <| ToggleVideo model.videoStage ]
-                        [ img [ src "./assets/rec_video.svg", class "h5 mb2" ] []
-                        , text "Click to Record Video"
-                        ]
+                    [ recordVideoButton model
                     , div [ class "w-50-ns w-100 mid-gray flex flex-column mv2" ]
                         [ img [ src "./assets/rec_audio.svg", class "h5 mb2" ] []
                         , text "Click to Record Audio"
