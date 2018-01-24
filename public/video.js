@@ -1,6 +1,3 @@
-// const record = document.getElementById('record')
-// const stop = document.getElementById('stop')
-
 if (!navigator.mediaDevices){
   alert('getUserMedia support required to use this page')
 }
@@ -10,7 +7,7 @@ let onDataAvailable = (e) => {
   chunks.push(e.data)
 }
 
-// Not showing vendor prefixes.
+// app.ports.videoRoute.subscribe(function() {
 navigator.mediaDevices.getUserMedia({
   audio: true,
   video: {
@@ -19,10 +16,6 @@ navigator.mediaDevices.getUserMedia({
   }
 }).then((mediaStream) => {
   const recorder = new MediaRecorder(mediaStream)
-  // recorder.ondataavailable = onDataAvailable
-  // const video = document.querySelector('video')
-  // const url = window.URL.createObjectURL(mediaStream)
-  // video.src = url
 
   app.ports.recordStart.subscribe(function() {
     recorder.start()
@@ -33,18 +26,17 @@ navigator.mediaDevices.getUserMedia({
 app.ports.recordStop.subscribe(function() {
   if (recorder) {
     recorder.stop()
+    // mediaStream.getTracks().map(function(track) {
+    //   track.stop();
+    // })
     console.log(recorder.state)
     console.log('recorder stopped')
   }
 });
 
-  // video.onloadedmetadata = (e) => {
-  //   console.log('onloadedmetadata', e)
-  // }
-
   recorder.onstop = (e) => {
-    console.log('e', e)
-    console.log('chunks', chunks)
+    console.log('e: ', e)
+    console.log('chunks: ', chunks)
     const bigVideoBlob = new Blob(chunks, { 'type' : 'video/mp4' })
     var videoURL = window.URL.createObjectURL(bigVideoBlob);
     app.ports.videoUrl.send(videoURL);
@@ -63,3 +55,4 @@ app.ports.recordStop.subscribe(function() {
   console.log('error', err);
   app.ports.recordError.send("Can't start video!");
 })
+// })

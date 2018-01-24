@@ -77,7 +77,17 @@ update msg model =
                     ( { model | videoStage = StageRecording }, recordStart "yes" )
 
         UrlChange location ->
-            ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
+            if getRoute location.hash == NextRole then
+                ( { model | route = getRoute location.hash }
+                , Cmd.batch
+                    [ Task.attempt (always NoOp) (toTop "container")
+                    , videoRoute ()
+                    ]
+                )
+            else
+                ( { model | route = getRoute location.hash }
+                , Task.attempt (always NoOp) (toTop "container")
+                )
 
         NoOp ->
             ( model, Cmd.none )
@@ -87,6 +97,9 @@ port recordStart : String -> Cmd msg
 
 
 port recordStop : String -> Cmd msg
+
+
+port videoRoute : () -> Cmd msg
 
 
 port recordError : (String -> msg) -> Sub msg
