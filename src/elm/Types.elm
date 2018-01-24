@@ -11,6 +11,7 @@ type Route
     | AboutYou
     | FourOhFour
     | NextRole
+    | ThankYou
 
 
 type alias Model =
