@@ -1,5 +1,6 @@
 module Routes.AboutYou exposing (..)
 
+import Components.GrayButton exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -12,7 +13,7 @@ aboutYou model =
         [ header []
             [ h1 [ class "tc dark-gray raleway fw2 pa5-ns pa4 f2 m0-auto" ] [ text "Tell us about you" ]
             ]
-        , section [ class "w-50-l w-90 w-75-m center bg-white br3 shadow-1 pv3" ]
+        , section [ class "w-60-l w-90 w-75-m center bg-white br3 shadow-1 pv3 mb4" ]
             [ article [ class " w-90 center pv1" ]
                 [ div []
                     [ img [ src "./assets/about_you.svg", class "absolute minus-margin h3" ] []
@@ -152,5 +153,5 @@ aboutYou model =
                     ]
                 ]
             ]
-        , a [ class "link db center tc no-underline fw1 white w-20-l w-40-m w-60 bg-gray fw2 center mv5 pa3 br4 fw1 f5 no-underline open-sans", href "#video" ] [ text "Next" ]
+        , grayButton ( "Next", "nextRole" )
         ]

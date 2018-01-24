@@ -26,7 +26,6 @@ navigator.mediaDevices.getUserMedia({
 
   app.ports.recordStart.subscribe(function() {
     recorder.start()
-    document.getElementById('status').innerHTML = 'recorder started'
     console.log(recorder.state)
     console.log('recorder started')
 });
@@ -35,7 +34,6 @@ app.ports.recordStop.subscribe(function() {
   if (recorder) {
     recorder.stop()
     console.log(recorder.state)
-    document.getElementById('status').innerHTML = 'recorder started'
     console.log('recorder stopped')
   }
 });

@@ -33,8 +33,8 @@ getRoute hash =
         "#about-you" ->
             AboutYou
 
-        "#video" ->
-            Video
+        "#nextRole" ->
+            NextRole
 
         _ ->
             FourOhFour

@@ -8,9 +8,9 @@ import Navigation
 
 type Route
     = Home
-    | Video
     | AboutYou
     | FourOhFour
+    | NextRole
 
 
 type alias Model =
