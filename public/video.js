@@ -7,7 +7,7 @@ let onDataAvailable = (e) => {
   chunks.push(e.data)
 }
 
-// app.ports.videoRoute.subscribe(function() {
+app.ports.videoRoute.subscribe(function() {
 navigator.mediaDevices.getUserMedia({
   audio: true,
   video: {
@@ -16,7 +16,7 @@ navigator.mediaDevices.getUserMedia({
   }
 }).then((mediaStream) => {
   const recorder = new MediaRecorder(mediaStream)
-
+  recorder.ondataavailable = onDataAvailable;
   app.ports.recordStart.subscribe(function() {
     recorder.start()
     console.log(recorder.state)
@@ -26,9 +26,9 @@ navigator.mediaDevices.getUserMedia({
 app.ports.recordStop.subscribe(function() {
   if (recorder) {
     recorder.stop()
-    // mediaStream.getTracks().map(function(track) {
-    //   track.stop();
-    // })
+    mediaStream.getTracks().map(function(track) {
+      track.stop();
+    })
     console.log(recorder.state)
     console.log('recorder stopped')
   }
@@ -55,4 +55,4 @@ app.ports.recordStop.subscribe(function() {
   console.log('error', err);
   app.ports.recordError.send("Can't start video!");
 })
-// })
+})
