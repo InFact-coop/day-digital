@@ -7,7 +7,10 @@ import Navigation
 
 
 type Route
-    = Hello
+    = Home
+    | Video
+    | AboutYou
+    | FourOhFour
 
 
 type alias Model =

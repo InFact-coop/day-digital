@@ -4,6 +4,7 @@ import Dom.Scroll exposing (..)
 import Types exposing (..)
 import Time exposing (Time, second)
 import Task
+import Types exposing (..)
 
 
 -- MODEL
@@ -11,7 +12,7 @@ import Task
 
 initModel : Model
 initModel =
-    { route = Hello
+    { route = Home
     , videoStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
@@ -26,11 +27,17 @@ initModel =
 getRoute : String -> Route
 getRoute hash =
     case hash of
-        "#hello" ->
-            Hello
+        "#home" ->
+            Home
+
+        "#about-you" ->
+            AboutYou
+
+        "#video" ->
+            Video
 
         _ ->
-            Hello
+            FourOhFour
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

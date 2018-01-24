@@ -26,10 +26,12 @@ router.route("/help_form").post((req, res, next) => {
 
 router.route("/video-upload").post((req, res, next) => {
   fs.rename(req.file.path, `${req.file.path}.mp4`, function (err) {
-    cloudinary.uploader.upload(`${req.file.path}.mp4`, function(err, result) {
+    // cloudinary documentation is wrong here, for uploader.upload the callback is the second argument and the options are the third
+    // the callback also has the arguments the wrong way round with the 'result' going first and the 'err' last
+    cloudinary.uploader.upload(`${req.file.path}.mp4`, function(result, err) {
       if (err) { console.log('err', err); };
-      console.log(result);
-      return res.send ('IT WORKED');
+      console.log('result', result);
+      return res.json({ success: true });
     }, { resource_type: "video" });
   });
 });

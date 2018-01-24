@@ -1,4 +1,4 @@
-module Routes.Hello exposing (..)
+module Routes.Video exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -6,8 +6,8 @@ import Html.Events exposing (..)
 import Types exposing (..)
 
 
-hello : Model -> Html Msg
-hello model =
+videoRoute : Model -> Html Msg
+videoRoute model =
     div []
         [ h3 [ id "status" ]
             []
