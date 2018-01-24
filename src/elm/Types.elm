@@ -1,14 +1,15 @@
 module Types exposing (..)
 
-import Navigation
 import Html exposing (..)
+import Navigation
 
 
 -- Model
 
 
 type Route
-    = Hello
+    = HelloRoute
+    | AboutYouRoute
 
 
 type alias Model =

@@ -1,8 +1,8 @@
 module State exposing (..)
 
 import Dom.Scroll exposing (..)
-import Types exposing (..)
 import Task
+import Types exposing (..)
 
 
 -- MODEL
@@ -10,7 +10,7 @@ import Task
 
 initModel : Model
 initModel =
-    { route = Hello }
+    { route = AboutYouRoute }
 
 
 
@@ -21,10 +21,13 @@ getRoute : String -> Route
 getRoute hash =
     case hash of
         "#hello" ->
-            Hello
+            HelloRoute
+
+        "#aboutYou" ->
+            AboutYouRoute
 
         _ ->
-            Hello
+            HelloRoute
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

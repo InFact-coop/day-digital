@@ -2,6 +2,7 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Routes.AboutYou exposing (..)
 import Routes.Hello exposing (..)
 import Types exposing (..)
 
@@ -11,9 +12,12 @@ view model =
     let
         page =
             case model.route of
-                Hello ->
+                HelloRoute ->
                     hello model
+
+                AboutYouRoute ->
+                    aboutYou model
     in
-        div [ class "w-100 fixed overflow-y-scroll top-0 bottom-0", id "container" ]
-            [ page
-            ]
+    div [ class "w-100 fixed overflow-y-scroll top-0 bottom-0", id "container" ]
+        [ page
+        ]
