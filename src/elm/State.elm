@@ -32,11 +32,17 @@ getRoute hash =
         "#about-you" ->
             AboutYou
 
-        "#nextRole" ->
+        "#next-role" ->
             NextRole
 
         "#thank-you" ->
             ThankYou
+
+        "#personal-intro" ->
+            PersonalIntro
+
+        "#challenging-project" ->
+            ChallengingProject
 
         _ ->
             FourOhFour
