@@ -9,4 +9,12 @@ import Types exposing (..)
 hello : Model -> Html Msg
 hello model =
     div []
-        [ text "Welcome to day digital" ]
+        [ h3 [ id "status" ]
+            []
+        , input [ id "record", type_ "button", value "record", onClick (ToggleVideo StagePreRecord) ]
+            []
+        , text ""
+        , input [ id "stop", type_ "button", value "stop", onClick (ToggleVideo StageRecording) ]
+            []
+        , text ""
+        ]

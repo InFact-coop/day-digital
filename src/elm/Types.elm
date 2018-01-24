@@ -1,7 +1,6 @@
 module Types exposing (..)
 
 import Navigation
-import Html exposing (..)
 
 
 -- Model
@@ -12,7 +11,19 @@ type Route
 
 
 type alias Model =
-    { route : Route }
+    { route : Route
+    , videoStage : Stage
+    , videoMessage : String
+    , messageLength : Int
+    , paused : Bool
+    }
+
+
+type Stage
+    = StagePreRecord
+    | StageRecording
+    | StageRecordStopped
+    | StageRecordError
 
 
 
@@ -22,3 +33,9 @@ type alias Model =
 type Msg
     = NoOp
     | UrlChange Navigation.Location
+    | RecordStart String
+    | RecordStop String
+    | RecordError String
+    | RecieveVideo String
+    | ToggleVideo Stage
+    | Increment

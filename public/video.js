@@ -1,5 +1,5 @@
-const record = document.getElementById('record')
-const stop = document.getElementById('stop')
+// const record = document.getElementById('record')
+// const stop = document.getElementById('stop')
 
 if (!navigator.mediaDevices){
   alert('getUserMedia support required to use this page')
@@ -19,34 +19,39 @@ navigator.mediaDevices.getUserMedia({
   }
 }).then((mediaStream) => {
   const recorder = new MediaRecorder(mediaStream)
-  recorder.ondataavailable = onDataAvailable
-  const video = document.querySelector('video')
-  const url = window.URL.createObjectURL(mediaStream)
-  video.src = url
+  // recorder.ondataavailable = onDataAvailable
+  // const video = document.querySelector('video')
+  // const url = window.URL.createObjectURL(mediaStream)
+  // video.src = url
 
-  record.onclick = () => {
+  app.ports.recordStart.subscribe(function() {
     recorder.start()
     document.getElementById('status').innerHTML = 'recorder started'
     console.log(recorder.state)
     console.log('recorder started')
-  }
+});
 
-  stop.onclick = ()=> {
+app.ports.recordStop.subscribe(function() {
+  if (recorder) {
     recorder.stop()
     console.log(recorder.state)
     document.getElementById('status').innerHTML = 'recorder started'
     console.log('recorder stopped')
   }
+});
 
-  video.onloadedmetadata = (e) => {
-    console.log('onloadedmetadata', e)
-  }
+  // video.onloadedmetadata = (e) => {
+  //   console.log('onloadedmetadata', e)
+  // }
 
   recorder.onstop = (e) => {
     console.log('e', e)
     console.log('chunks', chunks)
     const bigVideoBlob = new Blob(chunks, { 'type' : 'video/mp4' })
-    let fd = new FormData()
+    var videoURL = window.URL.createObjectURL(bigVideoBlob);
+    app.ports.videoUrl.send(videoURL);
+
+    let fd = new FormData();
     fd.append('videoData', bigVideoBlob)
     $.ajax({
       type: 'POST',
@@ -60,5 +65,6 @@ navigator.mediaDevices.getUserMedia({
     })
   }
 }).catch(function(err){
-  console.log('error', err)
+  console.log('error', err);
+  app.ports.recordError.send("Can't start video!");
 })
