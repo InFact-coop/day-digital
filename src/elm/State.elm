@@ -11,7 +11,7 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = ThankYou
+    { route = Home
     , videoStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
