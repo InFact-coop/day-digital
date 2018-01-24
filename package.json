@@ -4,17 +4,16 @@
   "description": "Find the help that speaks to you",
   "main": "index.js",
   "scripts": {
+    "start": "node ./src/server/start",
     "test": "NODE_ENV=test mocha ./tests/*  ",
     "test:watch": "NODE_ENV=test mocha ./tests/* --watch",
     "devbug": "elm-live src/elm/Main.elm --output=public/elm.js --dir=public --open --debug --pushstate & npm run css-watch",
-    "dev-front-end": "elm-live src/elm/Main.elm --output=public/elm.js --dir=public --open  --pushstate & npm run css-watch",
-    "build": "npm run css-build; elm-make src/elm/Main.elm --output=public/elm.js --yes",
+    "elm-watch": "chokidar '**/*.elm' -c 'elm make src/elm/Main.elm --output=public/elm.js' --initial",
     "css-watch": "postcss ./src/css/index.css --output ./public/style.min.css --watch --config ./postcss.config.js",
+    "dev-frontend": "npm run elm-watch & npm run css-watch",
+    "dev-backend": "NODE_ENV=development nodemon ./src/server/start",
     "css-build": "postcss ./src/css/index.css --output ./public/style.min.css --config ./postcss.config.js",
-    "dev-server": "NODE_ENV=development nodemon ./src/server/start",
-    "heroku-postbuild": "npm run build",
-    "start": "node ./src/server/start",
-    "dev": "npm run dev-server & npm run dev-front-end"
+    "heroku-postbuild": "npm run css-build; elm-make src/elm/Main.elm --output=public/elm.js --yes"
   },
   "repository": {
     "type": "git",
@@ -29,6 +28,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "chokidar-cli": "^1.2.0",
     "dotenv": "^4.0.0",
     "elm-live": "^2.7.5",
     "mocha": "^4.1.0",

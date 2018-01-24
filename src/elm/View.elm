@@ -4,7 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Routes.AboutYou exposing (..)
 import Routes.Home exposing (..)
-import Routes.FourOhFour04 exposing (..)
+import Routes.FourOhFour exposing (..)
 import Routes.Video exposing (..)
 import Types exposing (..)
 

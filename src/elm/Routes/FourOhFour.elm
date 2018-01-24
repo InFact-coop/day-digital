@@ -1,4 +1,4 @@
-module Routes.FourOhFour04 exposing (..)
+module Routes.FourOhFour exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
