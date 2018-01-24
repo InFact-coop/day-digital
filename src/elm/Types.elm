@@ -10,6 +10,7 @@ import Navigation
 type Route
     = HelloRoute
     | AboutYouRoute
+    | NextRoleRoute
 
 
 type alias Model =

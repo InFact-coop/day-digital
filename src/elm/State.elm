@@ -10,7 +10,7 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = AboutYouRoute }
+    { route = NextRoleRoute }
 
 
 
@@ -25,6 +25,9 @@ getRoute hash =
 
         "#aboutYou" ->
             AboutYouRoute
+
+        "#nextRole" ->
+            NextRoleRoute
 
         _ ->
             HelloRoute
