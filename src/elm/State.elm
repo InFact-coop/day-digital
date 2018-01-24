@@ -11,7 +11,7 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = ThankYou
+    { route = AboutYou
     , videoStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
@@ -32,11 +32,17 @@ getRoute hash =
         "#about-you" ->
             AboutYou
 
-        "#nextRole" ->
+        "#next-role" ->
             NextRole
 
         "#thank-you" ->
             ThankYou
+
+        "#personal-intro" ->
+            PersonalIntro
+
+        "#challenging-project" ->
+            ChallengingProject
 
         _ ->
             FourOhFour

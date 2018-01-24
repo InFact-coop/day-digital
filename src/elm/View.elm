@@ -3,9 +3,11 @@ module View exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Routes.AboutYou exposing (..)
+import Routes.ChallengingProject exposing (..)
 import Routes.FourOhFour exposing (..)
 import Routes.Home exposing (..)
 import Routes.NextRole exposing (..)
+import Routes.PersonalIntro exposing (..)
 import Routes.ThankYou exposing (..)
 import Types exposing (..)
 
@@ -29,6 +31,12 @@ view model =
 
                 ThankYou ->
                     thankYou model
+
+                PersonalIntro ->
+                    personalIntro model
+
+                ChallengingProject ->
+                    challengingProject model
     in
     div [ class "w-100 fixed overflow-y-scroll top-0 bottom-0 bg-light-blue m0-auto cover", id "container" ]
         [ page
