@@ -1,9 +1,8 @@
 port module State exposing (..)
 
 import Dom.Scroll exposing (..)
-import Types exposing (..)
-import Time exposing (Time, second)
 import Task
+import Time exposing (Time, second)
 import Types exposing (..)
 
 
@@ -12,7 +11,7 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = Home
+    { route = ThankYou
     , videoStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
@@ -35,6 +34,9 @@ getRoute hash =
 
         "#nextRole" ->
             NextRole
+
+        "#thank-you" ->
+            ThankYou
 
         _ ->
             FourOhFour

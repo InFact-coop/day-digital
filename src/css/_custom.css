@@ -29,3 +29,7 @@ body {
     margin-left: -12rem;
   }
 }
+
+.minus-top-margin{
+  margin-top: -2.5rem;
+}
