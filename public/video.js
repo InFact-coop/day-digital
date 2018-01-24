@@ -48,16 +48,13 @@ navigator.mediaDevices.getUserMedia({
     const bigVideoBlob = new Blob(chunks, { 'type' : 'video/mp4' })
     let fd = new FormData()
     fd.append('videoData', bigVideoBlob)
-    $.ajax({
-      type: 'POST',
-      enctype: 'multipart/form-data',
-      url: '/api/v1/video-upload',
-      data: fd,
-      processData: false,
-      contentType: false,
-      success: function (data) {console.log('success', data);},
-      error: function (error) {console.log('error', error);}
+    fetch("/api/v1/video-upload", {
+      method: 'POST',
+      body: fd
     })
+    .then(response => response.json())
+    .then(response => console.log('Success', response))
+    .catch(error => console.log('Error', error))
   }
 }).catch(function(err){
   console.log('error', err)
