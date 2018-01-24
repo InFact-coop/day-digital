@@ -10,7 +10,7 @@
 
 :root {
 
-  --sans-serif: 'Quicksand', 'helvetica neue', helvetica, arial, sans-serif;
+  --sans-serif: 'Open Sans', 'Raleway' 'helvetica neue', helvetica, arial, sans-serif;
   --serif: georgia, serif;
   --handwriting: Caveat;
   --code: consolas, monaco, monospace;
@@ -83,7 +83,7 @@
   --border-width-4: 1rem;
   --border-width-5: 2rem;
 
-  --box-shadow-1: 0px 0px 4px 2px rgba( 0, 0, 0, 0.2 );
+  --box-shadow-1: 0px 0px 10px 10px rgba( 0, 0, 0, 0.04 );
   --box-shadow-2: 0px 0px 8px 2px rgba( 0, 0, 0, 0.2 );
   --box-shadow-3: 2px 2px 4px 2px rgba( 0, 0, 0, 0.2 );
   --box-shadow-4: 2px 2px 8px 0px rgba( 0, 0, 0, 0.2 );
@@ -98,13 +98,22 @@
 
   /* ~ ~ ~ E N D ~ ~ ~ */
 
+  /* CUSTOM COLOURS */
+  /* dark title*/
+  --dark-gray:#333;
+
+  /* title */
+  --mid-gray:#777;
+
+  /*underline*/
+    --light-gray: #D8D8D8;
+
+    /* border */
+      --moon-gray: #D4D8E1;
+
   --black: #000;
   --near-black: #111;
-  --dark-gray:#333;
-  --mid-gray:#555;
   --light-silver: #aaa;
-  --moon-gray: #ccc;
-  --light-gray: #eee;
   --near-white: #f4f4f4;
   --white: #fff;
 
@@ -153,7 +162,7 @@
   --navy:  #001b44;
   --dark-blue:  #2D6B8E;
   --blue:  #357edd;
-  --light-blue:  #96ccff;
+  --light-blue:  #f6f7fb;
   --lightest-blue:  #cdecff;
   --washed-blue:  #f6fffe;
   --washed-green:  #E1F8EA;
