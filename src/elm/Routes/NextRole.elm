@@ -10,7 +10,7 @@ import Types exposing (..)
 nextRole : Model -> Html Msg
 nextRole model =
     div []
-        [ questionTemplate
+        [ questionTemplate model
             ( "What are you looking for in your next role?"
             , "aboutYou"
             )
