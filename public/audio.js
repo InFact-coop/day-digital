@@ -36,7 +36,8 @@ app.ports.prepareAudio.subscribe(function() {
       recorder.onstop = e => {
         console.log("e: ", e);
         console.log("audioChunks: ", audioChunks);
-        const bigAudioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        // TODO: check whether mp3 works
+        const bigAudioBlob = new Blob(audioChunks, { type: "audio/mp3" });
         var audioUrl = window.URL.createObjectURL(bigAudioBlob);
         // TODO: make audio url port
         app.ports.audioUrl.send(audioUrl);

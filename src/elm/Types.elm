@@ -20,7 +20,8 @@ type alias Model =
     { route : Route
     , videoStage : Stage
     , audioStage : Stage
-    , videoMessage : String
+    , liveVideoUrl : String
+    , recordedVideoUrl : String
     , messageLength : Int
     , paused : Bool
     , videoModal : Bool
@@ -45,7 +46,8 @@ type Msg
     | RecordStart
     | RecordStop
     | RecordError String
-    | RecieveVideo String
+    | ReceiveRecordedVideoUrl String
+    | ReceiveLiveVideoUrl String
     | ToggleVideo Stage
     | ToggleAudio Stage
     | Increment

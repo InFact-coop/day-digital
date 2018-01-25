@@ -19,7 +19,10 @@ port confirmRecording : () -> Cmd msg
 port recordError : (String -> msg) -> Sub msg
 
 
-port videoUrl : (String -> msg) -> Sub msg
+port recordedVideoUrl : (String -> msg) -> Sub msg
+
+
+port liveVideoUrl : (String -> msg) -> Sub msg
 
 
 port audioUrl : (String -> msg) -> Sub msg

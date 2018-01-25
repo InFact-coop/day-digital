@@ -14,12 +14,17 @@ initModel =
     { route = Home
     , videoStage = StagePreRecord
     , audioStage = StagePreRecord
-    , videoMessage = ""
+    , liveVideoUrl = ""
     , messageLength = 0
     , paused = True
     , videoModal = False
     , audioModal = False
+    , recordedVideoUrl = ""
     }
+
+
+
+-- TODO what is messageLength?
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -38,8 +43,11 @@ update msg model =
         RecordStop ->
             ( model, recordStop () )
 
-        RecieveVideo string ->
-            ( { model | videoMessage = string }, Cmd.none )
+        ReceiveRecordedVideoUrl string ->
+            ( { model | recordedVideoUrl = string, liveVideoUrl = "" }, Cmd.none )
+
+        ReceiveLiveVideoUrl string ->
+            ( { model | liveVideoUrl = string, recordedVideoUrl = "" }, Cmd.none )
 
         RecordError err ->
             ( { model | videoStage = StageRecordError }, Cmd.none )
@@ -88,18 +96,8 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ videoUrl RecieveVideo
+        [ recordedVideoUrl ReceiveRecordedVideoUrl
         , recordError RecordError
         , ifThenElse (not model.paused) (Time.every second (always Increment)) Sub.none
+        , liveVideoUrl ReceiveLiveVideoUrl
         ]
-
-
-
--- if getRoute location.hash == NextRole then
---     ( { model | route = getRoute location.hash }
---     , Cmd.batch
---         [ Task.attempt (always NoOp) (toTop "container")
---         , startVideo ()
---         ]
---     )
--- else

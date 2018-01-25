@@ -2,6 +2,7 @@ module Routes.NextRole exposing (..)
 
 import Components.GrayButton exposing (..)
 import Components.Questions exposing (..)
+import Helpers exposing (ifThenElse)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -28,10 +29,19 @@ videoModal : Model -> Html Msg
 videoModal model =
     if model.videoModal then
         div []
-            [ button [ class "hite w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text "record" ]
+            [ videoTag model
+            , button [ class "hite w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text "record" ]
             ]
     else
         div [] []
+
+
+videoTag : Model -> Html Msg
+videoTag model =
+    if model.liveVideoUrl == "" then
+        video [ controls True, src model.recordedVideoUrl ] []
+    else
+        video [ attribute "muted" "true", autoplay True, src model.liveVideoUrl ] []
 
 
 audioModal : Model -> Html Msg

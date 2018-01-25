@@ -16,5 +16,5 @@ main =
         { init = always ( initModel, Cmd.none )
         , view = view
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }

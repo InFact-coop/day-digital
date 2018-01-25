@@ -19,6 +19,10 @@ app.ports.prepareVideo.subscribe(function() {
     .then(mediaStream => {
       const recorder = new MediaRecorder(mediaStream);
       recorder.ondataavailable = onDataAvailable;
+      const video = document.querySelector("video");
+      const url = window.URL.createObjectURL(mediaStream);
+      app.ports.liveVideoUrl.send(url);
+      // video.src = url;
       app.ports.recordStart.subscribe(function() {
         recorder.start();
         console.log(recorder.state);
@@ -41,7 +45,7 @@ app.ports.prepareVideo.subscribe(function() {
         console.log("videoChunks: ", videoChunks);
         const bigVideoBlob = new Blob(videoChunks, { type: "video/mp4" });
         var videoURL = window.URL.createObjectURL(bigVideoBlob);
-        app.ports.videoUrl.send(videoURL);
+        app.ports.recordedVideoUrl.send(videoURL);
 
         let fd = new FormData();
         fd.append("recordingData", bigVideoBlob);
