@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Navigation
+import Http exposing (..)
 
 
 -- Model
@@ -22,7 +23,65 @@ type alias Model =
     , videoMessage : String
     , messageLength : Int
     , paused : Bool
+    , airtableForm : Form
+    , formSent : FormState
     }
+
+
+type FormState
+    = NotSent
+    | Pending
+    | Failure
+    | FailureServer
+    | Success
+
+
+type alias Form =
+    { name : String
+    , contactNumber : String
+    , email : String
+    , role : String
+    , roleOther : String
+    , startDate : String
+    , contractLength : String
+    , contractOther : String
+    , minRate : Int
+    , maxRate : Int
+    , cv : String
+    , linkedIn : String
+    , twitter : String
+    , gitHub : String
+    , website : String
+    , q1 : String
+    , q2 : String
+    , q3 : String
+    }
+
+
+type alias FormResponse =
+    { success : Bool
+    }
+
+
+type FormField
+    = Name
+    | ContactNumber
+    | Email
+    | Role
+    | RoleOther
+    | StartDate
+    | ContractLength
+    | ContractOther
+    | MinRate
+    | MaxRate
+    | CV
+    | LinkedIn
+    | Twitter
+    | GitHub
+    | Website
+    | Q1
+    | Q2
+    | Q3
 
 
 type Stage
@@ -43,5 +102,8 @@ type Msg
     | RecordStop String
     | RecordError String
     | RecieveVideo String
+    | OnFormSent (Result Http.Error FormResponse)
     | ToggleVideo Stage
     | Increment
+    | SendForm
+    | UpdateForm FormField String
