@@ -153,6 +153,5 @@ aboutYou model =
                     ]
                 ]
             ]
-        , button [ onClick SendForm ] [ text "AIRTABLE TEST" ]
         , grayButton ( "Next", "next-role" )
         ]
