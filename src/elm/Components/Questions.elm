@@ -5,6 +5,7 @@ module Components.Questions exposing (..)
 import Components.RecordVideoButton exposing (recordVideoButton)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Types exposing (..)
 
 

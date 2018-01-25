@@ -12,10 +12,12 @@ challengingProject : Model -> Html Msg
 challengingProject model =
     div []
         [ questionTemplate model
-            ( "What was the most challenging project you have worked on, and how did you contribute?"
+            ( "Q3: What was the most challenging project you have worked on, and how did you contribute?"
             , "personal-intro"
             )
-        , div [ class "white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick SendForm ] [ text "Submit" ]
+        , a [ href "#thank-you", onClick SendForm ]
+            [ div [ class "tc ma5" ] [ text "No thanks, I just want to send the form" ]
+            ]
         , videoModal model
         , audioModal model
         ]

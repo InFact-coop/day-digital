@@ -15,6 +15,7 @@ type Route
     | ThankYou
     | PersonalIntro
     | ChallengingProject
+    | SubmitScreen
 
 
 type alias Model =

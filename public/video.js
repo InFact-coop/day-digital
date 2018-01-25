@@ -1,18 +1,18 @@
 if (!navigator.mediaDevices) {
-  alert('getUserMedia support required to use this page');
+  alert("getUserMedia support required to use this page");
 }
 let recorder;
 let url;
 let bigVideoBlob;
 app.ports.recordStart.subscribe(function() {
-  console.log('recorder', recorder);
+  console.log("recorder", recorder);
   // console.log('mediaStream', mediaStream);
-  console.log('HELLO DARKNESS MY OLD FRIEND');
-  if (recorder.state !== 'recording') {
+  console.log("HELLO DARKNESS MY OLD FRIEND");
+  if (recorder.state !== "recording") {
     recorder.start();
   }
   console.log(recorder.state);
-  console.log('recorder started');
+  console.log("recorder started");
 });
 
 app.ports.prepareVideo.subscribe(function() {
@@ -25,53 +25,53 @@ app.ports.prepareVideo.subscribe(function() {
     .getUserMedia({
       audio: true,
       video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
+        width: { ideal: 640 },
+        height: { ideal: 360 }
       }
     })
     .then(mediaStream => {
       recorder = new MediaRecorder(mediaStream);
-      console.log('recorder', recorder);
+      console.log("recorder", recorder);
       recorder.ondataavailable = onDataAvailable;
       url = window.URL.createObjectURL(mediaStream);
       app.ports.liveVideoUrl.send(url);
       // video.src = url;
 
       app.ports.recordStop.subscribe(function() {
-        if (recorder.state !== 'inactive') {
+        if (recorder.state !== "inactive") {
           recorder.stop();
           mediaStream.getTracks().map(function(track) {
             track.stop();
           });
         }
         console.log(recorder.state);
-        console.log('recorder stopped');
+        console.log("recorder stopped");
       });
 
       recorder.onstop = e => {
-        bigVideoBlob = new Blob(videoChunks, { type: 'video/mp4' });
-        console.log('e: ', e);
-        console.log('videoChunks: ', videoChunks);
+        bigVideoBlob = new Blob(videoChunks, { type: "video/mp4" });
+        console.log("e: ", e);
+        console.log("videoChunks: ", videoChunks);
         var videoURL = window.URL.createObjectURL(bigVideoBlob);
         app.ports.recordedVideoUrl.send(videoURL);
       };
     })
     .catch(function(err) {
-      console.log('error', err);
+      console.log("error", err);
       app.ports.recordError.send("Can't start video!");
     });
 
   app.ports.uploadVideo.subscribe(function(questionNumber) {
     let fd = new FormData();
-    fd.append('recordingData', bigVideoBlob);
-    fd.append('question', questionNumber);
-    fetch('/api/v1/video-upload', {
-      method: 'POST',
+    fd.append("recordingData", bigVideoBlob);
+    fd.append("question", questionNumber);
+    fetch("/api/v1/video-upload", {
+      method: "POST",
       body: fd
     })
       .then(response => response.json())
       .then(response => {
-        console.log('Success', response);
+        console.log("Success", response);
         if (response.q1) {
           app.ports.getQ1Url.send(response.q1);
         } else if (response.q2) {
@@ -80,6 +80,6 @@ app.ports.prepareVideo.subscribe(function() {
           app.ports.getQ3Url.send(response.q3);
         }
       })
-      .catch(error => console.log('Error', error));
+      .catch(error => console.log("Error", error));
   });
 });
