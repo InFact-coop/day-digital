@@ -15,11 +15,21 @@ Airtable.configure({
   apiKey: process.env.AIRTABLE_API_KEY
 });
 
-router.route('/help_form').post((req, res, next) => {
-  base(process.env.AIRTABLE_TABLE).create(req.body, (err, record) => {
+router.route('/upload-form').post((req, res, next) => {
+  console.log('req.body!', req.body);
+  let newForm = req.body;
+  if (newForm['Role'] === '') newForm['Role'] = 'Backend';
+  if (newForm['Start Date'] === '') newForm['Start Date'] = '1970-01-01';
+  if (newForm['Contract Length'] === '')
+    newForm['Contract Length'] = '3 months';
+
+  console.log('newForm!', newForm);
+  base(process.env.AIRTABLE_TABLE).create(newForm, (err, record) => {
     if (err) {
+      console.log('ERR', err);
       return res.json({ success: false });
     }
+    console.log('SUCCESS', record);
     return res.json({ success: true });
   });
 });

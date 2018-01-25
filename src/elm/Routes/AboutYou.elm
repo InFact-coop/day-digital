@@ -41,7 +41,7 @@ aboutYou model =
                     , div [ class "black f5 pv2 open-sans" ] [ text "Type of job" ]
                     , div [ class "mid-gray fw1 raleway flex flex-row" ]
                         [ div [ class "pr3 f5 pb2 w5" ]
-                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Backend" ] []
+                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Backend", checked True ] []
                             , text "Backend"
                             ]
                         , div [ class " f5 pb2" ]
@@ -81,7 +81,7 @@ aboutYou model =
                     , div [ class "black f5 pv2 open-sans mt3" ] [ text "Contract Length" ]
                     , div [ class "mid-gray fw1 raleway" ]
                         [ div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "1 month" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "1 month", checked True ] []
                             , text "1 month"
                             ]
                         , div [ class "pr3 f5 pb2" ]
@@ -153,5 +153,6 @@ aboutYou model =
                     ]
                 ]
             ]
+        , button [ onClick SendForm ] [ text "AIRTABLE TEST" ]
         , grayButton ( "Next", "next-role" )
         ]

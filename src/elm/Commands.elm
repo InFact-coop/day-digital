@@ -58,7 +58,7 @@ postFormRequest : Model -> Http.Request FormResponse
 postFormRequest model =
     let
         baseUrl =
-            "/upload-form"
+            "/api/v1/upload-form"
     in
         methodRequest "POST" baseUrl (formEncoder model) formResponseDecoder
 
