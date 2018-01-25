@@ -107,6 +107,7 @@ type Msg
     | RecieveQ1Url String
     | RecieveQ2Url String
     | RecieveQ3Url String
+    | UploadQuestion String
     | RecordError String
     | ReceiveRecordedVideoUrl String
     | ReceiveLiveVideoUrl String
@@ -116,6 +117,5 @@ type Msg
     | Increment
     | PrepareVideo
     | PrepareAudio
-    | UploadQuestion String
     | SendForm
     | UpdateForm FormField String
