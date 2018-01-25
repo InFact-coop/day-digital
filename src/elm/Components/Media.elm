@@ -25,13 +25,13 @@ modalText stage =
 videoModal : Model -> Html Msg
 videoModal model =
     if model.videoModal then
-        div []
+        div [ class "w-90 h-90" ]
             [ videoTag model
             , button [ class "b white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text <| modalText model.videoStage ]
             ]
     else
         div
-            []
+            [ class "dn" ]
             []
 
 

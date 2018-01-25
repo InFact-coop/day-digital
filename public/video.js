@@ -1,6 +1,19 @@
 if (!navigator.mediaDevices) {
-  alert("getUserMedia support required to use this page");
+  alert('getUserMedia support required to use this page');
 }
+let recorder;
+let url;
+let bigVideoBlob;
+app.ports.recordStart.subscribe(function() {
+  console.log('recorder', recorder);
+  // console.log('mediaStream', mediaStream);
+  console.log('HELLO DARKNESS MY OLD FRIEND');
+  if (recorder.state !== 'recording') {
+    recorder.start();
+  }
+  console.log(recorder.state);
+  console.log('recorder started');
+});
 
 app.ports.prepareVideo.subscribe(function() {
   const videoChunks = [];
@@ -17,22 +30,12 @@ app.ports.prepareVideo.subscribe(function() {
       }
     })
     .then(mediaStream => {
-      const recorder = new MediaRecorder(mediaStream);
+      recorder = new MediaRecorder(mediaStream);
       console.log('recorder', recorder);
       recorder.ondataavailable = onDataAvailable;
-      const url = window.URL.createObjectURL(mediaStream);
+      url = window.URL.createObjectURL(mediaStream);
       app.ports.liveVideoUrl.send(url);
       // video.src = url;
-      app.ports.recordStart.subscribe(function() {
-        console.log('recorder', recorder);
-        console.log('mediaStream', mediaStream);
-        console.log('HELLO DARKNESS MY OLD FRIEND');
-        if (recorder.state !== 'recording') {
-          recorder.start();
-        }
-        console.log(recorder.state);
-        console.log('recorder started');
-      });
 
       app.ports.recordStop.subscribe(function() {
         if (recorder.state !== 'inactive') {
@@ -46,7 +49,7 @@ app.ports.prepareVideo.subscribe(function() {
       });
 
       recorder.onstop = e => {
-        const bigVideoBlob = new Blob(videoChunks, { type: "video/mp4" });
+        bigVideoBlob = new Blob(videoChunks, { type: 'video/mp4' });
         console.log('e: ', e);
         console.log('videoChunks: ', videoChunks);
         var videoURL = window.URL.createObjectURL(bigVideoBlob);
