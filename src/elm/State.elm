@@ -1,6 +1,8 @@
-port module State exposing (..)
+module State exposing (..)
 
 import Dom.Scroll exposing (..)
+import Ports exposing (..)
+import Router exposing (getRoute)
 import Task
 import Time exposing (Time, second)
 import Json.Decode as Decode
@@ -10,9 +12,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import Types exposing (..)
 import Commands exposing (..)
-
-
--- MODEL
+import Helpers exposing (..)
 
 
 initForm : Form
@@ -24,41 +24,20 @@ initModel : Model
 initModel =
     { route = Home
     , videoStage = StagePreRecord
-    , videoMessage = ""
+    , audioStage = StagePreRecord
+    , liveVideoUrl = ""
     , messageLength = 0
     , paused = True
+    , videoModal = False
+    , audioModal = False
+    , recordedVideoUrl = ""
     , airtableForm = initForm
     , formSent = NotSent
     }
 
 
 
---UPDATE
-
-
-getRoute : String -> Route
-getRoute hash =
-    case hash of
-        "#home" ->
-            Home
-
-        "#about-you" ->
-            AboutYou
-
-        "#next-role" ->
-            NextRole
-
-        "#thank-you" ->
-            ThankYou
-
-        "#personal-intro" ->
-            PersonalIntro
-
-        "#challenging-project" ->
-            ChallengingProject
-
-        _ ->
-            FourOhFour
+-- TODO what is messageLength?
 
 
 createNewForm : Form -> FormField -> String -> Form
@@ -140,14 +119,17 @@ update msg model =
             else
                 ( { model | messageLength = model.messageLength + 1 }, Cmd.none )
 
-        RecordStart string ->
-            ( model, recordStart string )
+        RecordStart ->
+            ( model, recordStart () )
 
-        RecordStop string ->
-            ( model, recordStop string )
+        RecordStop ->
+            ( model, recordStop () )
 
-        RecieveVideo string ->
-            ( { model | videoMessage = string }, Cmd.none )
+        ReceiveRecordedVideoUrl string ->
+            ( { model | recordedVideoUrl = string, liveVideoUrl = "" }, Cmd.none )
+
+        ReceiveLiveVideoUrl string ->
+            ( { model | liveVideoUrl = string, recordedVideoUrl = "" }, Cmd.none )
 
         RecordError err ->
             ( { model | videoStage = StageRecordError }, Cmd.none )
@@ -161,23 +143,13 @@ update msg model =
                     ( { model | videoStage = StagePreRecord }, Cmd.none )
 
                 StageRecording ->
-                    ( { model | videoStage = StageRecordStopped }, recordStop "yes" )
+                    ( { model | videoStage = StageRecordStopped }, recordStop () )
 
                 StagePreRecord ->
-                    ( { model | videoStage = StageRecording }, recordStart "yes" )
+                    ( { model | videoStage = StageRecording }, recordStart () )
 
         UrlChange location ->
-            if getRoute location.hash == NextRole then
-                ( { model | route = getRoute location.hash }
-                , Cmd.batch
-                    [ Task.attempt (always NoOp) (toTop "container")
-                    , videoRoute ()
-                    ]
-                )
-            else
-                ( { model | route = getRoute location.hash }
-                , Task.attempt (always NoOp) (toTop "container")
-                )
+            ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
 
         SendForm ->
             ( { model | formSent = Pending }, sendFormCmd model )
@@ -199,32 +171,35 @@ update msg model =
         OnFormSent (Err _) ->
             ( { model | formSent = FailureServer }, Cmd.none )
 
+        ToggleAudio stage ->
+            case stage of
+                StageRecordError ->
+                    ( { model | audioStage = StageRecordError }, Cmd.none )
+
+                StageRecordStopped ->
+                    ( { model | audioStage = StagePreRecord }, Cmd.none )
+
+                StageRecording ->
+                    ( { model | audioStage = StageRecordStopped }, recordStop () )
+
+                StagePreRecord ->
+                    ( { model | audioStage = StageRecording }, recordStart () )
+
+        PrepareVideo ->
+            { model | videoModal = True } ! [ prepareVideo () ]
+
+        PrepareAudio ->
+            { model | audioModal = True } ! [ prepareAudio () ]
+
         NoOp ->
             ( model, Cmd.none )
-
-
-port recordStart : String -> Cmd msg
-
-
-port recordStop : String -> Cmd msg
-
-
-port videoRoute : () -> Cmd msg
-
-
-port recordError : (String -> msg) -> Sub msg
-
-
-port videoUrl : (String -> msg) -> Sub msg
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ videoUrl RecieveVideo
+        [ recordedVideoUrl ReceiveRecordedVideoUrl
         , recordError RecordError
-        , if not model.paused then
-            Time.every second (always Increment)
-          else
-            Sub.none
+        , ifThenElse (not model.paused) (Time.every second (always Increment)) Sub.none
+        , liveVideoUrl ReceiveLiveVideoUrl
         ]

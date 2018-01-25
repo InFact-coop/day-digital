@@ -1,4 +1,4 @@
-module View exposing (..)
+module Router exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -38,6 +38,31 @@ view model =
                 ChallengingProject ->
                     challengingProject model
     in
-    div [ class "w-100 fixed overflow-y-scroll top-0 bottom-0 bg-light-blue m0-auto cover", id "container" ]
-        [ page
-        ]
+        div [ class "w-100 fixed overflow-y-scroll top-0 bottom-0 bg-light-blue m0-auto cover", id "container" ]
+            [ page
+            ]
+
+
+getRoute : String -> Route
+getRoute hash =
+    case hash of
+        "#home" ->
+            Home
+
+        "#about-you" ->
+            AboutYou
+
+        "#next-role" ->
+            NextRole
+
+        "#thank-you" ->
+            ThankYou
+
+        "#personal-intro" ->
+            PersonalIntro
+
+        "#challenging-project" ->
+            ChallengingProject
+
+        _ ->
+            FourOhFour

@@ -2,27 +2,20 @@ if (!navigator.mediaDevices) {
   alert("getUserMedia support required to use this page");
 }
 
-app.ports.prepareVideo.subscribe(function() {
-  const videoChunks = [];
+app.ports.prepareAudio.subscribe(function() {
+  const audioChunks = [];
   let onDataAvailable = e => {
-    videoChunks.push(e.data);
+    audioChunks.push(e.data);
   };
 
   navigator.mediaDevices
     .getUserMedia({
       audio: true,
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      }
+      video: false
     })
     .then(mediaStream => {
       const recorder = new MediaRecorder(mediaStream);
       recorder.ondataavailable = onDataAvailable;
-      const video = document.querySelector("video");
-      const url = window.URL.createObjectURL(mediaStream);
-      app.ports.liveVideoUrl.send(url);
-      // video.src = url;
       app.ports.recordStart.subscribe(function() {
         recorder.start();
         console.log(recorder.state);
@@ -42,14 +35,16 @@ app.ports.prepareVideo.subscribe(function() {
 
       recorder.onstop = e => {
         console.log("e: ", e);
-        console.log("videoChunks: ", videoChunks);
-        const bigVideoBlob = new Blob(videoChunks, { type: "video/mp4" });
-        var videoURL = window.URL.createObjectURL(bigVideoBlob);
-        app.ports.recordedVideoUrl.send(videoURL);
+        console.log("audioChunks: ", audioChunks);
+        // TODO: check whether mp3 works
+        const bigAudioBlob = new Blob(audioChunks, { type: "audio/mp3" });
+        var audioUrl = window.URL.createObjectURL(bigAudioBlob);
+        // TODO: make audio url port
+        app.ports.audioUrl.send(audioUrl);
 
         let fd = new FormData();
-        fd.append("recordingData", bigVideoBlob);
-        fetch("/api/v1/video-upload", {
+        fd.append("recordingData", bigAudioBlob);
+        fetch("/api/v1/audio-upload", {
           method: "POST",
           body: fd
         })
@@ -60,6 +55,6 @@ app.ports.prepareVideo.subscribe(function() {
     })
     .catch(function(err) {
       console.log("error", err);
-      app.ports.recordError.send("Can't start video!");
+      app.ports.recordError.send("Can't start audio!");
     });
 });

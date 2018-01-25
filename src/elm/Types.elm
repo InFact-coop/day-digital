@@ -20,9 +20,13 @@ type Route
 type alias Model =
     { route : Route
     , videoStage : Stage
-    , videoMessage : String
+    , audioStage : Stage
+    , liveVideoUrl : String
+    , recordedVideoUrl : String
     , messageLength : Int
     , paused : Bool
+    , videoModal : Bool
+    , audioModal : Bool
     , airtableForm : Form
     , formSent : FormState
     }
@@ -98,12 +102,16 @@ type Stage
 type Msg
     = NoOp
     | UrlChange Navigation.Location
-    | RecordStart String
-    | RecordStop String
+    | RecordStart
+    | RecordStop
     | RecordError String
-    | RecieveVideo String
+    | ReceiveRecordedVideoUrl String
+    | ReceiveLiveVideoUrl String
     | OnFormSent (Result Http.Error FormResponse)
     | ToggleVideo Stage
+    | ToggleAudio Stage
     | Increment
+    | PrepareVideo
+    | PrepareAudio
     | SendForm
     | UpdateForm FormField String
