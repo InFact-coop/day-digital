@@ -2,7 +2,7 @@ module Commands exposing (..)
 
 import Types exposing (..)
 import Json.Decode as Decode
-import Json.Decode.Pipeline exposing (decode, required)
+import Json.Decode.Pipeline exposing (decode, required, optional)
 import Http exposing (..)
 import Json.Decode as Decode
 import Json.Encode as Encode

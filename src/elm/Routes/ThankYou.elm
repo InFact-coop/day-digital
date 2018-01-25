@@ -3,7 +3,6 @@ module Routes.ThankYou exposing (..)
 import Components.GrayButton exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Types exposing (..)
 
 

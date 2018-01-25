@@ -5,11 +5,6 @@ import Ports exposing (..)
 import Router exposing (getRoute)
 import Task
 import Time exposing (Time, second)
-import Json.Decode as Decode
-import Json.Decode.Pipeline exposing (decode, required)
-import Http exposing (..)
-import Json.Decode as Decode
-import Json.Encode as Encode
 import Types exposing (..)
 import Commands exposing (..)
 import Helpers exposing (..)
@@ -128,28 +123,38 @@ update msg model =
         ReceiveRecordedVideoUrl string ->
             ( { model | recordedVideoUrl = string, liveVideoUrl = "" }, Cmd.none )
 
+        RecieveQ1Url string ->
+            let
+                newForm =
+                    createNewForm model.airtableForm Q1 string
+            in
+                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+
+        RecieveQ2Url string ->
+            let
+                newForm =
+                    createNewForm model.airtableForm Q2 string
+            in
+                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+
+        RecieveQ3Url string ->
+            let
+                newForm =
+                    createNewForm model.airtableForm Q3 string
+            in
+                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+
         ReceiveLiveVideoUrl string ->
             ( { model | liveVideoUrl = string, recordedVideoUrl = "" }, Cmd.none )
 
         RecordError err ->
             ( { model | videoStage = StageRecordError }, Cmd.none )
 
-        ToggleVideo stage ->
-            case stage of
-                StageRecordError ->
-                    ( { model | videoStage = StageRecordError }, Cmd.none )
-
-                StageRecordStopped ->
-                    ( { model | videoStage = StagePreRecord }, Cmd.none )
-
-                StageRecording ->
-                    ( { model | videoStage = StageRecordStopped }, recordStop () )
-
-                StagePreRecord ->
-                    ( { model | videoStage = StageRecording }, recordStart () )
+        UploadQuestion string ->
+            ( model, uploadVideo string )
 
         UrlChange location ->
-            ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
+            ( { model | route = getRoute location.hash, videoStage = StagePreRecord, audioStage = StagePreRecord, recordedVideoUrl = "", liveVideoUrl = "" }, Task.attempt (always NoOp) (toTop "container") )
 
         SendForm ->
             ( { model | formSent = Pending }, sendFormCmd model )
@@ -171,13 +176,27 @@ update msg model =
         OnFormSent (Err _) ->
             ( { model | formSent = FailureServer }, Cmd.none )
 
+        ToggleVideo stage ->
+            case stage of
+                StageRecordError ->
+                    ( { model | videoStage = StageRecordError }, Cmd.none )
+
+                StageRecordStopped ->
+                    ( { model | videoStage = StagePreRecord, videoModal = True }, prepareVideo () )
+
+                StageRecording ->
+                    ( { model | videoStage = StageRecordStopped }, recordStop () )
+
+                StagePreRecord ->
+                    ( { model | videoStage = StageRecording }, recordStart () )
+
         ToggleAudio stage ->
             case stage of
                 StageRecordError ->
                     ( { model | audioStage = StageRecordError }, Cmd.none )
 
                 StageRecordStopped ->
-                    ( { model | audioStage = StagePreRecord }, Cmd.none )
+                    ( { model | audioStage = StagePreRecord }, prepareVideo () )
 
                 StageRecording ->
                     ( { model | audioStage = StageRecordStopped }, recordStop () )
@@ -186,7 +205,7 @@ update msg model =
                     ( { model | audioStage = StageRecording }, recordStart () )
 
         PrepareVideo ->
-            { model | videoModal = True } ! [ prepareVideo () ]
+            { model | videoModal = True, videoStage = StagePreRecord } ! [ prepareVideo () ]
 
         PrepareAudio ->
             { model | audioModal = True } ! [ prepareAudio () ]
@@ -199,6 +218,9 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ recordedVideoUrl ReceiveRecordedVideoUrl
+        , getQ1Url RecieveQ1Url
+        , getQ2Url RecieveQ2Url
+        , getQ3Url RecieveQ3Url
         , recordError RecordError
         , ifThenElse (not model.paused) (Time.every second (always Increment)) Sub.none
         , liveVideoUrl ReceiveLiveVideoUrl

@@ -104,6 +104,9 @@ type Msg
     | UrlChange Navigation.Location
     | RecordStart
     | RecordStop
+    | RecieveQ1Url String
+    | RecieveQ2Url String
+    | RecieveQ3Url String
     | RecordError String
     | ReceiveRecordedVideoUrl String
     | ReceiveLiveVideoUrl String
@@ -113,5 +116,6 @@ type Msg
     | Increment
     | PrepareVideo
     | PrepareAudio
+    | UploadQuestion String
     | SendForm
     | UpdateForm FormField String

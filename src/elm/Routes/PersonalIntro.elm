@@ -2,9 +2,9 @@ module Routes.PersonalIntro exposing (..)
 
 import Components.GrayButton exposing (..)
 import Components.Questions exposing (..)
+import Components.Media exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Types exposing (..)
 
 
@@ -19,4 +19,6 @@ personalIntro model =
         , a [ href "#thank-you" ]
             [ div [ class "tc mb5" ] [ text "No thanks, I just want to send the form" ]
             ]
+        , videoModal model
+        , audioModal model
         ]

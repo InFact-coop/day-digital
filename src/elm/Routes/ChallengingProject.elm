@@ -1,10 +1,9 @@
 module Routes.ChallengingProject exposing (..)
 
 import Components.GrayButton exposing (..)
+import Components.Media exposing (..)
 import Components.Questions exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Types exposing (..)
 
 
@@ -16,4 +15,6 @@ challengingProject model =
             , "personal-intro"
             )
         , grayButton ( "Submit", "thank-you" )
+        , videoModal model
+        , audioModal model
         ]
