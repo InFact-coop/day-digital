@@ -3,25 +3,33 @@ port module State exposing (..)
 import Dom.Scroll exposing (..)
 import Task
 import Time exposing (Time, second)
+import Json.Decode as Decode
+import Json.Decode.Pipeline exposing (decode, required)
+import Http exposing (..)
+import Json.Decode as Decode
+import Json.Encode as Encode
 import Types exposing (..)
+import Commands exposing (..)
 
 
 -- MODEL
 
 
+initForm : Form
+initForm =
+    Form "" "" "" "" "" "" "" "" 0 0 "" "" "" "" "" "" "" ""
+
+
 initModel : Model
 initModel =
-    let
-        initForm =
-            Form "" "" "" "" "" "" "" "" 0 0 "" "" "" "" "" "" "" ""
-    in
-        { route = Home
-        , videoStage = StagePreRecord
-        , videoMessage = ""
-        , messageLength = 0
-        , paused = True
-        , airtableForm = initForm
-        }
+    { route = Home
+    , videoStage = StagePreRecord
+    , videoMessage = ""
+    , messageLength = 0
+    , paused = True
+    , airtableForm = initForm
+    , formSent = NotSent
+    }
 
 
 
@@ -170,6 +178,26 @@ update msg model =
                 ( { model | route = getRoute location.hash }
                 , Task.attempt (always NoOp) (toTop "container")
                 )
+
+        SendForm ->
+            ( { model | formSent = Pending }, sendFormCmd model )
+
+        OnFormSent (Ok result) ->
+            case result.success of
+                True ->
+                    ( { model
+                        | airtableForm = initForm
+                        , formSent = Success
+                        , route = ThankYou
+                      }
+                    , Cmd.none
+                    )
+
+                False ->
+                    ( { model | formSent = FailureServer }, Cmd.none )
+
+        OnFormSent (Err _) ->
+            ( { model | formSent = FailureServer }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
