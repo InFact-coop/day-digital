@@ -22,7 +22,51 @@ type alias Model =
     , videoMessage : String
     , messageLength : Int
     , paused : Bool
+    , airtableForm : Form
     }
+
+
+type alias Form =
+    { name : String
+    , contactNumber : String
+    , email : String
+    , role : String
+    , roleOther : String
+    , startDate : String
+    , contractLength : String
+    , contractOther : String
+    , minRate : Int
+    , maxRate : Int
+    , cv : String
+    , linkedIn : String
+    , twitter : String
+    , gitHub : String
+    , website : String
+    , q1 : String
+    , q2 : String
+    , q3 : String
+    }
+
+
+type FormField
+    = Name
+    | ContactNumber
+    | Email
+    | Role
+    | RoleOther
+    | StartDate
+    | ContractLength
+    | ContractOther
+    | MinRate
+    | MaxRate
+    | CV
+    | LinkedIn
+    | Twitter
+    | GitHub
+    | Website
+    | Q1
+    | Q2
+    | Q3
 
 
 type Stage
@@ -45,3 +89,9 @@ type Msg
     | RecieveVideo String
     | ToggleVideo Stage
     | Increment
+    | UpdateForm FormField String
+
+
+
+-- | UpdateRole String
+-- | UpdateLength String

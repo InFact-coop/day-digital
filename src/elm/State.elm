@@ -11,12 +11,17 @@ import Types exposing (..)
 
 initModel : Model
 initModel =
-    { route = Home
-    , videoStage = StagePreRecord
-    , videoMessage = ""
-    , messageLength = 0
-    , paused = True
-    }
+    let
+        initForm =
+            Form "" "" "" "" "" "" "" "" 0 0 "" "" "" "" "" "" "" ""
+    in
+        { route = Home
+        , videoStage = StagePreRecord
+        , videoMessage = ""
+        , messageLength = 0
+        , paused = True
+        , airtableForm = initForm
+        }
 
 
 
@@ -48,9 +53,78 @@ getRoute hash =
             FourOhFour
 
 
+createNewForm : Form -> FormField -> String -> Form
+createNewForm currentForm fieldType content =
+    case fieldType of
+        Name ->
+            { currentForm | name = content }
+
+        ContactNumber ->
+            { currentForm | contactNumber = content }
+
+        Email ->
+            { currentForm | email = content }
+
+        Role ->
+            { currentForm | role = content }
+
+        RoleOther ->
+            { currentForm | roleOther = content }
+
+        StartDate ->
+            { currentForm | startDate = content }
+
+        ContractLength ->
+            { currentForm | contractLength = content }
+
+        ContractOther ->
+            { currentForm | contractOther = content }
+
+        MinRate ->
+            { currentForm
+                | minRate = Result.withDefault 0 (String.toInt content)
+            }
+
+        MaxRate ->
+            { currentForm
+                | maxRate = Result.withDefault 0 (String.toInt content)
+            }
+
+        CV ->
+            { currentForm | cv = content }
+
+        LinkedIn ->
+            { currentForm | linkedIn = content }
+
+        Twitter ->
+            { currentForm | twitter = content }
+
+        GitHub ->
+            { currentForm | gitHub = content }
+
+        Website ->
+            { currentForm | website = content }
+
+        Q1 ->
+            { currentForm | q1 = content }
+
+        Q2 ->
+            { currentForm | q2 = content }
+
+        Q3 ->
+            { currentForm | q3 = content }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        UpdateForm fieldType content ->
+            let
+                newForm =
+                    createNewForm model.airtableForm fieldType content
+            in
+                ( { model | airtableForm = newForm }, Cmd.none )
+
         Increment ->
             if model.messageLength >= 30 then
                 model

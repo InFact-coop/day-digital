@@ -21,15 +21,15 @@ aboutYou model =
                     , div [ class "open-sans black fw4 flex justify-between flex-wrap f6" ]
                         [ div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Full Name"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50 ba" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50 ba", onInput <| UpdateForm Name ] [] ]
                             ]
                         , div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Phone Number"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm ContactNumber, pattern "(?:0|\\+?)(?:\\d\\s?){9,12}" ] [] ]
                             ]
                         , div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Email"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "email", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm Email ] [] ]
                             ]
                         ]
                     ]
@@ -41,68 +41,68 @@ aboutYou model =
                     , div [ class "black f5 pv2 open-sans" ] [ text "Type of job" ]
                     , div [ class "mid-gray fw1 raleway flex flex-row" ]
                         [ div [ class "pr3 f5 pb2 w5" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Backend" ] []
                             , text "Backend"
                             ]
                         , div [ class " f5 pb2" ]
-                            [ input [ type_ "checkbox" ] []
+                            [ input [ type_ "radio", name "role", onClick <| UpdateForm Role "Product Manager" ] []
                             , text "Product Manager"
                             ]
                         ]
                     , div [ class "mid-gray fw1 raleway flex flex-row" ]
                         [ div [ class "pr3 f5 pb2 w5" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Frontend" ] []
                             , text "Frontend"
                             ]
                         , div [ class " f5 pb2" ]
-                            [ input [ type_ "checkbox" ] []
+                            [ input [ type_ "radio", name "role", onClick <| UpdateForm Role "Visual Designer" ] []
                             , text "Visual Designer"
                             ]
                         ]
                     , div [ class "mid-gray fw1 raleway flex flex-row" ]
                         [ div [ class "pr3 f5 pb2 w5" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Full Stack" ] []
                             , text "Full Stack"
                             ]
                         , div [ class " f5 pb2" ]
-                            [ input [ type_ "checkbox" ] []
+                            [ input [ type_ "radio", name "role", onClick <| UpdateForm Role "User Research" ] []
                             , text "User Research"
                             ]
                         ]
                     , div [ class "mid-gray fw1 raleway flex flex-column" ]
                         [ div [ class "pr3 f5 pb2 " ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Other" ] []
                             , text "Other"
                             ]
-                        , input [ type_ "text", class "w-20 h2 ba b--moon-gray o-50 br4 pl2", placeholder "If other, please state" ] []
+                        , input [ type_ "text", class "w-20 h2 ba b--moon-gray o-50 br4 pl2", placeholder "If other, please state", name "role", onInput <| UpdateForm RoleOther ] []
                         ]
                     , div [ class "black f5 pv2 open-sans mt3" ] [ text "Start Date" ]
-                    , input [ type_ "date", class "w-20 h2 ba b--moon-gray o-50 br4 pl2" ] []
+                    , input [ type_ "date", class "w-20 h2 ba b--moon-gray o-50 br4 pl2", onInput <| UpdateForm StartDate ] []
                     , div [ class "black f5 pv2 open-sans mt3" ] [ text "Contract Length" ]
                     , div [ class "mid-gray fw1 raleway" ]
                         [ div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "1 month" ] []
                             , text "1 month"
                             ]
                         , div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "3 months" ] []
                             , text "3 months"
                             ]
                         , div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "6 months" ] []
                             , text "6 months"
                             ]
                         , div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "1 year" ] []
                             , text "1 year"
                             ]
                         , div [ class "pr3 f5 pb2" ]
-                            [ input [ type_ "checkbox", class "mr2" ] []
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "other" ] []
                             , text "other"
                             ]
                         , div [ class "f6 flex flex-column" ]
                             [ text "How long is the contract length you are after"
-                            , input [ type_ "text", class "w-20 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "Please state" ] []
+                            , input [ type_ "text", class "w-20 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "Please state", onInput <| UpdateForm ContractOther ] []
                             ]
                         ]
                     , div [ class "black f5 pv2 open-sans mt3 gray" ]
@@ -110,9 +110,9 @@ aboutYou model =
                     , div
                         [ class "mid-gray mb3" ]
                         [ text "Min:"
-                        , input [ type_ "text", class "w-1s0 br4 ba b--moon-gray h2 pl2 mid-gray mt2 mr3", placeholder "£" ] []
+                        , input [ type_ "text", class "w-1s0 br4 ba b--moon-gray h2 pl2 mid-gray mt2 mr3", placeholder "£", onInput <| UpdateForm MinRate ] []
                         , text "Max:"
-                        , input [ type_ "text", class "w-1s0 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "£" ] []
+                        , input [ type_ "text", class "w-1s0 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "£", onInput <| UpdateForm MaxRate ] []
                         ]
                     ]
                 ]
@@ -123,7 +123,7 @@ aboutYou model =
                     , div [ class "open-sans black fw4 flex justify-between flex-wrap f6" ]
                         [ div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Add a link to your CV here"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm CV ] [] ]
                             ]
                         ]
                     ]
@@ -135,19 +135,19 @@ aboutYou model =
                     , div [ class "open-sans black fw4 flex justify-between flex-wrap f6" ]
                         [ div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "LinkedIn"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50 o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50 o-50", onInput <| UpdateForm LinkedIn ] [] ]
                             ]
                         , div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Twitter"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm Twitter ] [] ]
                             ]
                         , div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Github"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm GitHub ] [] ]
                             ]
                         , div [ class "w-50-ns w-100 pv3 flex-column bg-none" ]
                             [ text "Personal Website"
-                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50" ] [] ]
+                            , div [] [ input [ type_ "text", class "br4 b--moon-gray w-75 h2 mt2 ba o-50", onInput <| UpdateForm Website ] [] ]
                             ]
                         ]
                     ]
