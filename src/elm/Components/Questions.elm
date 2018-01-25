@@ -23,7 +23,7 @@ questionTemplate model ( title, back ) =
             [ article [ class " w-90 center pv1" ]
                 [ h2 [ class "mid-gray raleway" ] [ text "One video is worth 1000 (written!) words..." ]
                 , p [ class "mid-gray raleway fw1" ] [ text "In this section we would like you to make a short video or voice recording of yourself, telling us in your own words what you are looking for." ]
-                , h3 [ class "center tc dark-gray pv4" ] [ text title ]
+                , h3 [ class "center tc dark-gray pv4 ph5-ns" ] [ text title ]
                 , div [ class "flex flex-row flex-wrap center tc w-75 justify-between mr1" ]
                     [ recordVideoButton model
                     , div [ class "w-50-ns w-100 mid-gray flex flex-column mv2" ]

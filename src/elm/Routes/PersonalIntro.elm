@@ -1,4 +1,4 @@
-module Routes.NextRole exposing (..)
+module Routes.PersonalIntro exposing (..)
 
 import Components.GrayButton exposing (..)
 import Components.Questions exposing (..)
@@ -8,14 +8,14 @@ import Html.Events exposing (..)
 import Types exposing (..)
 
 
-nextRole : Model -> Html Msg
-nextRole model =
+personalIntro : Model -> Html Msg
+personalIntro model =
     div []
         [ questionTemplate model
-            ( "What are you looking for in your next role?"
-            , "about-you"
+            ( "Please give us a small personal intro (60 second overview, hobbies, interests, what you enjoy outside of work)"
+            , "next-role"
             )
-        , grayButton ( "Next Question", "personal-intro" )
+        , grayButton ( "Next Question", "challenging-project" )
         , a [ href "#thank-you" ]
             [ div [ class "tc mb5" ] [ text "No thanks, I just want to send the form" ]
             ]
