@@ -24,6 +24,7 @@ type alias Model =
     , messageLength : Int
     , paused : Bool
     , videoModal : Bool
+    , audioModal : Bool
     }
 
 
@@ -49,3 +50,4 @@ type Msg
     | ToggleAudio Stage
     | Increment
     | PrepareVideo
+    | PrepareAudio

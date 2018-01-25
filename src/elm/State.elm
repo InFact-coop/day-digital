@@ -18,6 +18,7 @@ initModel =
     , messageLength = 0
     , paused = True
     , videoModal = False
+    , audioModal = False
     }
 
 
@@ -60,22 +61,25 @@ update msg model =
         ToggleAudio stage ->
             case stage of
                 StageRecordError ->
-                    ( { model | videoStage = StageRecordError }, Cmd.none )
+                    ( { model | audioStage = StageRecordError }, Cmd.none )
 
                 StageRecordStopped ->
-                    ( { model | videoStage = StagePreRecord }, Cmd.none )
+                    ( { model | audioStage = StagePreRecord }, Cmd.none )
 
                 StageRecording ->
-                    ( { model | videoStage = StageRecordStopped }, recordStop () )
+                    ( { model | audioStage = StageRecordStopped }, recordStop () )
 
                 StagePreRecord ->
-                    ( { model | videoStage = StageRecording }, recordStart () )
+                    ( { model | audioStage = StageRecording }, recordStart () )
 
         UrlChange location ->
             ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
 
         PrepareVideo ->
             { model | videoModal = True } ! [ prepareVideo () ]
+
+        PrepareAudio ->
+            { model | audioModal = True } ! [ prepareAudio () ]
 
         NoOp ->
             ( model, Cmd.none )

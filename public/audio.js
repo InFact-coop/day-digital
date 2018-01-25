@@ -2,12 +2,12 @@ if (!navigator.mediaDevices) {
   alert("getUserMedia support required to use this page");
 }
 
-const chunks = [];
-let onDataAvailable = e => {
-  chunks.push(e.data);
-};
+app.ports.prepareAudio.subscribe(function() {
+  const audioChunks = [];
+  let onDataAvailable = e => {
+    audioChunks.push(e.data);
+  };
 
-app.ports.startAudio.subscribe(function() {
   navigator.mediaDevices
     .getUserMedia({
       audio: true,
@@ -35,14 +35,14 @@ app.ports.startAudio.subscribe(function() {
 
       recorder.onstop = e => {
         console.log("e: ", e);
-        console.log("chunks: ", chunks);
-        const bigAudioBlob = new Blob(chunks, { type: "audio/webm" });
+        console.log("audioChunks: ", audioChunks);
+        const bigAudioBlob = new Blob(audioChunks, { type: "audio/webm" });
         var audioUrl = window.URL.createObjectURL(bigAudioBlob);
         // TODO: make audio url port
         app.ports.audioUrl.send(audioUrl);
 
         let fd = new FormData();
-        fd.append("audioData", bigAudioBlob);
+        fd.append("recordingData", bigAudioBlob);
         fetch("/api/v1/audio-upload", {
           method: "POST",
           body: fd

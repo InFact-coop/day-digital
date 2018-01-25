@@ -20,6 +20,7 @@ nextRole model =
             [ div [ class "tc mb5" ] [ text "No thanks, I just want to send the form" ]
             ]
         , videoModal model
+        , audioModal model
         ]
 
 
@@ -28,6 +29,16 @@ videoModal model =
     if model.videoModal then
         div []
             [ button [ class "hite w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text "record" ]
+            ]
+    else
+        div [] []
+
+
+audioModal : Model -> Html Msg
+audioModal model =
+    if model.audioModal then
+        div []
+            [ button [ class "hite w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleAudio model.audioStage ] [ text "record" ]
             ]
     else
         div [] []
