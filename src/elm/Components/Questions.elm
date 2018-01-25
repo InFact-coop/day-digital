@@ -1,6 +1,7 @@
 module Components.Questions exposing (..)
 
-import Components.RecordAudioButton exposing (recordAudioButton)
+-- import Components.RecordAudioButton exposing (recordAudioButton)
+
 import Components.RecordVideoButton exposing (recordVideoButton)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -26,7 +27,6 @@ questionTemplate model ( title, back ) =
                 , h3 [ class "center tc dark-gray pv4 ph5-ns" ] [ text title ]
                 , div [ class "flex flex-row flex-wrap center tc w-75 justify-between mr1" ]
                     [ recordVideoButton model
-                    , recordAudioButton model
                     ]
                 ]
             ]

@@ -12,7 +12,7 @@ recordVideoButton model =
         ( image, content ) =
             toggleVideoButton model.videoStage
     in
-        div [ class "w-50-ns w-100 mid-gray flex flex-column mv2 pointer", onClick PrepareVideo ]
+        div [ class "w-50-ns w-100 mid-gray flex center flex-column mv2 pointer", onClick PrepareVideo ]
             [ img [ src image, class "h5 mb2" ] []
             , text content
             ]
