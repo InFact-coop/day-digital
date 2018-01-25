@@ -7,14 +7,11 @@ let onDataAvailable = e => {
   chunks.push(e.data);
 };
 
-app.ports.prepareVideo.subscribe(function() {
+app.ports.startAudio.subscribe(function() {
   navigator.mediaDevices
     .getUserMedia({
       audio: true,
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      }
+      video: false
     })
     .then(mediaStream => {
       const recorder = new MediaRecorder(mediaStream);
@@ -39,13 +36,14 @@ app.ports.prepareVideo.subscribe(function() {
       recorder.onstop = e => {
         console.log("e: ", e);
         console.log("chunks: ", chunks);
-        const bigVideoBlob = new Blob(chunks, { type: "video/mp4" });
-        var videoURL = window.URL.createObjectURL(bigVideoBlob);
-        app.ports.videoUrl.send(videoURL);
+        const bigAudioBlob = new Blob(chunks, { type: "audio/webm" });
+        var audioUrl = window.URL.createObjectURL(bigAudioBlob);
+        // TODO: make audio url port
+        app.ports.audioUrl.send(audioUrl);
 
         let fd = new FormData();
-        fd.append("videoData", bigVideoBlob);
-        fetch("/api/v1/video-upload", {
+        fd.append("audioData", bigAudioBlob);
+        fetch("/api/v1/audio-upload", {
           method: "POST",
           body: fd
         })
@@ -56,6 +54,6 @@ app.ports.prepareVideo.subscribe(function() {
     })
     .catch(function(err) {
       console.log("error", err);
-      app.ports.recordError.send("Can't start video!");
+      app.ports.recordError.send("Can't start audio!");
     });
 });

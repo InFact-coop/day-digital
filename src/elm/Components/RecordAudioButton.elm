@@ -1,4 +1,4 @@
-module Components.RecordVideoButton exposing (..)
+module Components.RecordAudioButton exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -6,20 +6,20 @@ import Html.Events exposing (onClick)
 import Types exposing (..)
 
 
-recordVideoButton : Model -> Html Msg
-recordVideoButton model =
+recordAudioButton : Model -> Html Msg
+recordAudioButton model =
     let
         ( image, content ) =
-            toggleVideoButton model.videoStage
+            toggleAudioButton model.videoStage
     in
-        div [ class "w-50-ns w-100 mid-gray flex flex-column mv2 pointer", onClick PrepareVideo ]
+        div [ class "w-50-ns w-100 mid-gray flex flex-column mv2 pointer", onClick <| ToggleVideo model.videoStage ]
             [ img [ src image, class "h5 mb2" ] []
             , text content
             ]
 
 
-toggleVideoButton : Stage -> ( String, String )
-toggleVideoButton stage =
+toggleAudioButton : Stage -> ( String, String )
+toggleAudioButton stage =
     case stage of
         StagePreRecord ->
             ( "./assets/rec_video.svg", "Click to Record Video" )

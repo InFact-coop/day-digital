@@ -6,7 +6,7 @@ import Navigation
 -- My Elm Files
 
 import State exposing (..)
-import View exposing (..)
+import Router exposing (..)
 import Types exposing (..)
 
 

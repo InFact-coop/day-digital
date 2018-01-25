@@ -19,9 +19,11 @@ type Route
 type alias Model =
     { route : Route
     , videoStage : Stage
+    , audioStage : Stage
     , videoMessage : String
     , messageLength : Int
     , paused : Bool
+    , videoModal : Bool
     }
 
 
@@ -44,4 +46,6 @@ type Msg
     | RecordError String
     | RecieveVideo String
     | ToggleVideo Stage
+    | ToggleAudio Stage
     | Increment
+    | PrepareVideo

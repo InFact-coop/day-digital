@@ -1,51 +1,24 @@
-port module State exposing (..)
+module State exposing (..)
 
 import Dom.Scroll exposing (..)
+import Ports exposing (..)
+import Router exposing (getRoute)
 import Task
 import Time exposing (Time, second)
 import Types exposing (..)
-
-
--- MODEL
+import Helpers exposing (..)
 
 
 initModel : Model
 initModel =
     { route = Home
     , videoStage = StagePreRecord
+    , audioStage = StagePreRecord
     , videoMessage = ""
     , messageLength = 0
     , paused = True
+    , videoModal = False
     }
-
-
-
---UPDATE
-
-
-getRoute : String -> Route
-getRoute hash =
-    case hash of
-        "#home" ->
-            Home
-
-        "#about-you" ->
-            AboutYou
-
-        "#next-role" ->
-            NextRole
-
-        "#thank-you" ->
-            ThankYou
-
-        "#personal-intro" ->
-            PersonalIntro
-
-        "#challenging-project" ->
-            ChallengingProject
-
-        _ ->
-            FourOhFour
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -84,39 +57,28 @@ update msg model =
                 StagePreRecord ->
                     ( { model | videoStage = StageRecording }, recordStart () )
 
+        ToggleAudio stage ->
+            case stage of
+                StageRecordError ->
+                    ( { model | videoStage = StageRecordError }, Cmd.none )
+
+                StageRecordStopped ->
+                    ( { model | videoStage = StagePreRecord }, Cmd.none )
+
+                StageRecording ->
+                    ( { model | videoStage = StageRecordStopped }, recordStop () )
+
+                StagePreRecord ->
+                    ( { model | videoStage = StageRecording }, recordStart () )
+
         UrlChange location ->
-            if getRoute location.hash == NextRole then
-                ( { model | route = getRoute location.hash }
-                , Cmd.batch
-                    [ Task.attempt (always NoOp) (toTop "container")
-                    , videoRoute ()
-                    ]
-                )
-            else
-                ( { model | route = getRoute location.hash }
-                , Task.attempt (always NoOp) (toTop "container")
-                )
+            ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
+
+        PrepareVideo ->
+            { model | videoModal = True } ! [ prepareVideo () ]
 
         NoOp ->
             ( model, Cmd.none )
-
-
-port recordStart : () -> Cmd msg
-
-
-port recordStop : () -> Cmd msg
-
-
-port videoRoute : () -> Cmd msg
-
-
-port confirmRecording : () -> Cmd msg
-
-
-port recordError : (String -> msg) -> Sub msg
-
-
-port videoUrl : (String -> msg) -> Sub msg
 
 
 subscriptions : Model -> Sub Msg
@@ -124,8 +86,16 @@ subscriptions model =
     Sub.batch
         [ videoUrl RecieveVideo
         , recordError RecordError
-        , if not model.paused then
-            Time.every second (always Increment)
-          else
-            Sub.none
+        , ifThenElse (not model.paused) (Time.every second (always Increment)) Sub.none
         ]
+
+
+
+-- if getRoute location.hash == NextRole then
+--     ( { model | route = getRoute location.hash }
+--     , Cmd.batch
+--         [ Task.attempt (always NoOp) (toTop "container")
+--         , startVideo ()
+--         ]
+--     )
+-- else

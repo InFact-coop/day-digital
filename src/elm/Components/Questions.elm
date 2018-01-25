@@ -1,9 +1,9 @@
 module Components.Questions exposing (..)
 
+import Components.RecordAudioButton exposing (recordAudioButton)
 import Components.RecordVideoButton exposing (recordVideoButton)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
 import Types exposing (..)
 
 
@@ -26,10 +26,7 @@ questionTemplate model ( title, back ) =
                 , h3 [ class "center tc dark-gray pv4 ph5-ns" ] [ text title ]
                 , div [ class "flex flex-row flex-wrap center tc w-75 justify-between mr1" ]
                     [ recordVideoButton model
-                    , div [ class "w-50-ns w-100 mid-gray flex flex-column mv2" ]
-                        [ img [ src "./assets/rec_audio.svg", class "h5 mb2" ] []
-                        , text "Click to Record Audio"
-                        ]
+                    , recordAudioButton model
                     ]
                 ]
             ]
