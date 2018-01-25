@@ -2,10 +2,8 @@ module Routes.NextRole exposing (..)
 
 import Components.GrayButton exposing (..)
 import Components.Questions exposing (..)
-import Helpers exposing (ifThenElse)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Types exposing (..)
 import Components.Media exposing (..)
 
