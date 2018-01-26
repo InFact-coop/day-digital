@@ -40,7 +40,9 @@ videoModal model =
 
 displaySendVideoButton : Model -> Html Msg
 displaySendVideoButton model =
-    if model.videoStage == StageRecordStopped then
+    if model.videoStage == StageRecordStopped && model.route == ChallengingProject then
+        button [ onClick <| sendQuestion model.route, class "b white w-30-l w-40-m w-60 bg-green fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans" ] [ text "Confirm and Send" ]
+    else if model.videoStage == StageRecordStopped then
         button [ onClick <| sendQuestion model.route, class "b white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans" ] [ text "Confirm Video" ]
     else
         div [] []
