@@ -20,8 +20,8 @@ var https_redirect = function(req, res, next) {
   }
 };
 
-app.use(express.static(path.join(__dirname, "../../public")));
 app.use(https_redirect);
+app.use(express.static(path.join(__dirname, "../../public")));
 app.use(bodyParser.json());
 app.use(upload.single("recordingData"));
 app.use(express.static("public"));
