@@ -28,6 +28,7 @@ initModel =
     , recordedVideoUrl = ""
     , airtableForm = initForm
     , formSent = NotSent
+    , formRequestCount = 0
     }
 
 
@@ -141,8 +142,11 @@ update msg model =
             let
                 newForm =
                     createNewForm model.airtableForm Q3 string
+
+                newModel =
+                    { model | airtableForm = newForm, formRequestCount = model.formRequestCount + 1, formSent = Pending }
             in
-                ( { model | airtableForm = newForm, formSent = Pending }, sendFormCmd model )
+                newModel ! ifThenElse (newModel.formRequestCount == 3) [ sendFormCmd model ] []
 
         ReceiveLiveVideoUrl string ->
             ( { model | liveVideoUrl = string, recordedVideoUrl = "" }, Cmd.none )
@@ -154,7 +158,10 @@ update msg model =
             ( { model | videoModal = ifThenElse (model.route == ChallengingProject) True False, route = goToNextQuestion model.route }, uploadVideo string )
 
         UrlChange location ->
-            ( { model | route = getRoute location.hash, videoStage = StagePreRecord, audioStage = StagePreRecord, recordedVideoUrl = "", liveVideoUrl = "" }, Task.attempt (always NoOp) (toTop "container") )
+            if getRoute location.hash == Home then
+                initModel ! []
+            else
+                ( { model | route = getRoute location.hash }, Task.attempt (always NoOp) (toTop "container") )
 
         SendForm ->
             ( { model | formSent = Pending }, sendFormCmd model )
@@ -205,13 +212,15 @@ update msg model =
                     ( { model | audioStage = StageRecording }, recordStart () )
 
         PrepareVideo ->
-            { model | videoModal = True, videoStage = StagePreRecord } ! [ prepareVideo () ]
+            { model | videoModal = True, videoStage = StagePreRecord, recordedVideoUrl = "" } ! [ prepareVideo () ]
 
         PrepareAudio ->
             { model | audioModal = True } ! [ prepareAudio () ]
 
         NoOp ->
             ( model, Cmd.none )
+
+
 
 
 goToNextQuestion : Route -> Route

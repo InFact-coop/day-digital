@@ -30,6 +30,7 @@ type alias Model =
     , audioModal : Bool
     , airtableForm : Form
     , formSent : FormState
+    , formRequestCount : Int
     }
 
 
