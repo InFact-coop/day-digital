@@ -128,21 +128,21 @@ update msg model =
                 newForm =
                     createNewForm model.airtableForm Q1 string
             in
-                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+                ( { model | airtableForm = newForm }, Cmd.none )
 
         RecieveQ2Url string ->
             let
                 newForm =
                     createNewForm model.airtableForm Q2 string
             in
-                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+                ( { model | airtableForm = newForm }, Cmd.none )
 
         RecieveQ3Url string ->
             let
                 newForm =
                     createNewForm model.airtableForm Q3 string
             in
-                ( { model | airtableForm = newForm, recordedVideoUrl = "", liveVideoUrl = "" }, Cmd.none )
+                ( { model | airtableForm = newForm, formSent = Pending }, sendFormCmd model )
 
         ReceiveLiveVideoUrl string ->
             ( { model | liveVideoUrl = string, recordedVideoUrl = "" }, Cmd.none )
@@ -151,7 +151,7 @@ update msg model =
             ( { model | videoStage = StageRecordError }, Cmd.none )
 
         UploadQuestion string ->
-            ( model, uploadVideo string )
+            ( { model | videoModal = ifThenElse (model.route == ChallengingProject) True False, route = goToNextQuestion model.route }, uploadVideo string )
 
         UrlChange location ->
             ( { model | route = getRoute location.hash, videoStage = StagePreRecord, audioStage = StagePreRecord, recordedVideoUrl = "", liveVideoUrl = "" }, Task.attempt (always NoOp) (toTop "container") )
@@ -212,6 +212,22 @@ update msg model =
 
         NoOp ->
             ( model, Cmd.none )
+
+
+goToNextQuestion : Route -> Route
+goToNextQuestion route =
+    case route of
+        NextRole ->
+            PersonalIntro
+
+        PersonalIntro ->
+            ChallengingProject
+
+        ChallengingProject ->
+            ChallengingProject
+
+        _ ->
+            NextRole
 
 
 subscriptions : Model -> Sub Msg

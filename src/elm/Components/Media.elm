@@ -16,7 +16,7 @@ modalText stage =
             "Click to Stop"
 
         StageRecordStopped ->
-            "Click to Restart"
+            "Re-record video"
 
         StageRecordError ->
             "Error!"
@@ -25,14 +25,27 @@ modalText stage =
 videoModal : Model -> Html Msg
 videoModal model =
     if model.videoModal then
-        div [ class "w-90 h-90" ]
-            [ videoTag model
-            , button [ class "b white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text <| modalText model.videoStage ]
+        div [ class "w-100 h-100 fixed left-0 top-0 modalGray flex items-center justify-center" ]
+            [ div [ class "tc" ]
+                [ videoTag model
+                , button [ class "b white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans", onClick <| ToggleVideo model.videoStage ] [ text <| modalText model.videoStage ]
+                , displaySendVideoButton model
+                ]
             ]
     else
         div
             [ class "dn" ]
             []
+
+
+displaySendVideoButton : Model -> Html Msg
+displaySendVideoButton model =
+    if model.videoStage == StageRecordStopped && model.route == ChallengingProject then
+        button [ onClick <| sendQuestion model.route, class "b white w-30-l w-40-m w-60 bg-green fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans" ] [ text "Confirm and Send" ]
+    else if model.videoStage == StageRecordStopped then
+        button [ onClick <| sendQuestion model.route, class "b white w-30-l w-40-m w-60 bg-gray fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans" ] [ text "Confirm Video" ]
+    else
+        div [] []
 
 
 sendQuestion : Route -> Msg
@@ -60,12 +73,11 @@ sendQuestion route =
 videoTag : Model -> Html Msg
 videoTag model =
     if model.liveVideoUrl == "" then
-        div []
+        div [ class "tc" ]
             [ video [ controls True, src model.recordedVideoUrl ] []
-            , button [ onClick <| sendQuestion model.route ] [ text "HELLO HERE IS A BUTTON" ]
             ]
     else
-        div []
+        div [ class "tc" ]
             [ video [ attribute "muted" "true", autoplay True, src model.liveVideoUrl ] []
             ]
 

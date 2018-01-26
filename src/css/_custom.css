@@ -10,7 +10,7 @@ body {
   font-family: "Raleway", sans-serif !important;
 }
 
-.m0-auto{
+.m0-auto {
   margin: 0 auto;
 }
 
@@ -30,6 +30,18 @@ body {
   }
 }
 
-.minus-top-margin{
+.minus-top-margin {
   margin-top: -2.5rem;
+}
+
+.top5percent {
+  top: 5%;
+}
+
+.left5percent {
+  left: 5%;
+}
+
+.modalGray {
+  background-color: rgba(112, 112, 112, 0.7);
 }
