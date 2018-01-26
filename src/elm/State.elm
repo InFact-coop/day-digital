@@ -17,7 +17,7 @@ initForm =
 
 initModel : Model
 initModel =
-    { route = NextRole
+    { route = Home
     , videoStage = StagePreRecord
     , audioStage = StagePreRecord
     , liveVideoUrl = ""

@@ -27,5 +27,5 @@ submitScreen model =
                 , img [ src "./assets/recording_stopped.svg" ] []
                 ]
             ]
-        , div [ class "white w-30-l w-40-m w-60 bg-green fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans tc", onClick SendForm ] [ text "Submit" ]
+        , div [ class "pointer white w-30-l w-40-m w-60 bg-green fw2 center mv4 pa3 br4 fw1 f5 no-underline open-sans tc", onClick SendForm ] [ text "Submit" ]
         ]
