@@ -5,9 +5,6 @@ let recorder;
 let url;
 let bigVideoBlob;
 app.ports.recordStart.subscribe(function() {
-  console.log("recorder", recorder);
-  // console.log('mediaStream', mediaStream);
-  console.log("HELLO DARKNESS MY OLD FRIEND");
   if (recorder.state !== "recording") {
     recorder.start();
   }
@@ -31,19 +28,19 @@ app.ports.prepareVideo.subscribe(function() {
     })
     .then(mediaStream => {
       recorder = new MediaRecorder(mediaStream);
-      console.log("recorder", recorder);
       recorder.ondataavailable = onDataAvailable;
       url = window.URL.createObjectURL(mediaStream);
       app.ports.liveVideoUrl.send(url);
-      // video.src = url;
 
       app.ports.recordStop.subscribe(function() {
         if (recorder.state !== "inactive") {
+          console.log("recorder", recorder);
           recorder.stop();
-          mediaStream.getTracks().map(function(track) {
-            track.stop();
-          });
         }
+        mediaStream.getTracks().map(function(track) {
+          track.stop();
+          mediaStream.removeTrack(track);
+        });
         console.log(recorder.state);
         console.log("recorder stopped");
       });

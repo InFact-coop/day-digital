@@ -72,13 +72,13 @@ aboutYou model =
                     , div [ class "mid-gray fw1 raleway flex flex-column" ]
                         [ div [ class "pr3 f5 pb2 " ]
                             [ input [ type_ "radio", class "mr2", name "role", onClick <| UpdateForm Role "Other" ] []
-                            , text "Other"
+                            , text "Any other comments"
                             ]
                         , input [ type_ "text", class "w-20 h2 ba b--moon-gray o-50 br4 pl2", placeholder "If other, please state", name "role", onInput <| UpdateForm RoleOther ] []
                         ]
-                    , div [ class "black f5 pv2 open-sans mt3" ] [ text "Start Date" ]
+                    , div [ class "black f5 pv2 open-sans mt3" ] [ text "When would you like your next contract to start?" ]
                     , input [ type_ "date", class "w-20 h2 ba b--moon-gray o-50 br4 pl2", onInput <| UpdateForm StartDate ] []
-                    , div [ class "black f5 pv2 open-sans mt3" ] [ text "Contract Length" ]
+                    , div [ class "black f5 pv2 open-sans mt3" ] [ text "What is your ideal length of contract?" ]
                     , div [ class "mid-gray fw1 raleway" ]
                         [ div [ class "pr3 f5 pb2" ]
                             [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "1 month", checked True ] []
@@ -97,16 +97,19 @@ aboutYou model =
                             , text "1 year"
                             ]
                         , div [ class "pr3 f5 pb2" ]
+                            [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "I'm flexible!" ] []
+                            , text "I'm flexible!"
+                            ]
+                        , div [ class "pr3 f5 pb2" ]
                             [ input [ type_ "radio", class "mr2", name "contract-length", onClick <| UpdateForm ContractLength "other" ] []
-                            , text "other"
+                            , text "Any other comments"
                             ]
                         , div [ class "f6 flex flex-column" ]
-                            [ text "How long is the contract length you are after"
-                            , input [ type_ "text", class "w-20 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "Please state", onInput <| UpdateForm ContractOther ] []
+                            [ input [ type_ "text", class "w-20 br4 ba b--moon-gray h2 pl2 mid-gray mt2", placeholder "Please state", onInput <| UpdateForm ContractOther ] []
                             ]
                         ]
                     , div [ class "black f5 pv2 open-sans mt3 gray" ]
-                        [ text "Rate" ]
+                        [ text "Daily Rate" ]
                     , div
                         [ class "mid-gray mb3" ]
                         [ text "Min:"
